@@ -3,7 +3,7 @@ session_start();
 
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: login.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -12,7 +12,7 @@ function conectarBD() {
     $host = "localhost";
     $dbuser = "root";
     $dbpass = "";
-    $dbname = "tienda_producto"; // Usar la base de datos creada
+    $dbname = "tienda_producto";
     $conn = new mysqli($host, $dbuser, $dbpass, $dbname);
     if ($conn->connect_error) {
         die("Conexión fallida: " . $conn->connect_error);
@@ -31,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_producto']))
 
     // Subir la imagen miniatura
     if (isset($_FILES['imagen_miniatura']) && $_FILES['imagen_miniatura']['error'] == 0) {
-        // Crear el directorio 'uploads' si no existe
         $upload_dir = __DIR__ . "/uploads/";
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0777, true);
@@ -41,29 +40,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_producto']))
         if (move_uploaded_file($_FILES["imagen_miniatura"]["tmp_name"], $target_file)) {
             $imagen_miniatura = "uploads/" . basename($_FILES["imagen_miniatura"]["name"]);
         } else {
-            echo "Error al subir la imagen miniatura.";
+            $feedback_message = "Error al subir la imagen miniatura.";
+            $feedback_class = "alert-danger";
         }
     }
 
     // Insertar producto en la base de datos
-    $conn = conectarBD();
-    $sql = "INSERT INTO productos (nombre, descripcion, precio, cantidad, imagen_larga, imagen_miniatura) 
-            VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    // Nota: El tipo de dato para imagen_larga y imagen_miniatura debe ser 's' (string)
-    $stmt->bind_param("ssdiss", $nombre, $descripcion, $precio, $cantidad, $imagen_larga, $imagen_miniatura);
-    
-    if ($stmt->execute()) {
-        $feedback_message = "Producto registrado exitosamente";
-        $feedback_class = "alert-success";
-    } else {
-        $feedback_message = "Error al registrar el producto: " . $conn->error;
-        $feedback_class = "alert-danger";
+    if (empty($feedback_message)) {
+        $conn = conectarBD();
+        $sql = "INSERT INTO productos (nombre, descripcion, precio, cantidad, imagen_larga, imagen_miniatura) 
+                VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssdiss", $nombre, $descripcion, $precio, $cantidad, $imagen_larga, $imagen_miniatura);
+        
+        if ($stmt->execute()) {
+            $feedback_message = "Producto registrado exitosamente";
+            $feedback_class = "alert-success";
+        } else {
+            $feedback_message = "Error al registrar el producto: " . $conn->error;
+            $feedback_class = "alert-danger";
+        }
+        $stmt->close();
+        $conn->close();
     }
-    $stmt->close();
-    $conn->close();
 }
-
 
 // Eliminar producto
 if (isset($_GET['eliminar_id'])) {
@@ -75,14 +75,14 @@ if (isset($_GET['eliminar_id'])) {
     $stmt->execute();
     $stmt->close();
     $conn->close();
-    header("Location: registro_producto.php");  // Redirigir para evitar reenvío del formulario
+    header("Location: registro_producto.php");
     exit();
 }
 
 // Obtener productos registrados
 function obtenerProductos() {
     $conn = conectarBD();
-    $sql = "SELECT * FROM productos ORDER BY id DESC"; // Ordenar por ID descendente para ver los más nuevos primero
+    $sql = "SELECT * FROM productos ORDER BY id DESC";
     $result = $conn->query($sql);
     $conn->close();
     return $result;
@@ -95,11 +95,27 @@ $productos = obtenerProductos();
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Producto</title>
+    <title>Panel de Administración</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
+        <header class="welcome-header">
+            <div>
+                <p>Bienvenido, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong></p>
+                <p>
+                    <?php 
+                        if (isset($_SESSION['last_login_time'])) {
+                            echo 'Última conexión: ' . date('d/m/Y H:i', strtotime($_SESSION['last_login_time']));
+                        } else {
+                            echo '¡Esta es tu primera conexión!';
+                        }
+                    ?>
+                </p>
+            </div>
+            <a href="logout.php" class="btn btn-danger" style="width: auto;">Cerrar Sesión</a>
+        </header>
+        
         <h2>Formulario de Registro de Producto</h2>
 
         <?php if (isset($feedback_message)): ?>
@@ -125,7 +141,7 @@ $productos = obtenerProductos();
             <input type="submit" name="registrar_producto" value="Registrar Producto" class="btn">
         </form>
 
-        <h2>Productos Registrados</h2>
+        <h2 style="margin-top: 3rem;">Productos Registrados</h2>
         <div class="table-container">
             <?php if ($productos->num_rows > 0): ?>
                 <table>
@@ -147,7 +163,7 @@ $productos = obtenerProductos();
                                 <td><?php echo htmlspecialchars($producto['id']); ?></td>
                                 <td>
                                     <?php if (!empty($producto['imagen_miniatura']) && file_exists($producto['imagen_miniatura'])): ?>
-                                        <img src="<?php echo htmlspecialchars($producto['imagen_miniatura']); ?>" alt="Miniatura de <?php echo htmlspecialchars($producto['nombre']); ?>" class="product-thumbnail">
+                                        <img src="<?php echo htmlspecialchars($producto['imagen_miniatura']); ?>" alt="Miniatura" class="product-thumbnail">
                                     <?php else: ?>
                                         <span>Sin imagen</span>
                                     <?php endif; ?>

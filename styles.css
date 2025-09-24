@@ -4,15 +4,12 @@
   -- 1. Variables y Estilos Globales --
   ==============================================
 */
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
     --font-primary: 'Poppins', sans-serif;
-    /* --- LÍNEAS MODIFICADAS --- */
-    --color-primary: #48bb78; /* Verde principal */
-    --color-primary-dark: #38a169; /* Verde oscuro para hover */
-    /* -------------------------- */
+    --color-primary: #48bb78;
+    --color-primary-dark: #38a169;
     --color-success: #38a169;
     --color-success-dark: #2f855a;
     --color-danger: #e53e3e;
@@ -33,7 +30,7 @@ body {
     color: var(--color-text);
     background-color: var(--color-background);
     margin: 0;
-    padding: 2rem;
+    padding: 0;
 }
 
 h2 {
@@ -87,7 +84,6 @@ textarea:focus,
 input[type="file"]:focus {
     outline: none;
     border-color: var(--color-primary);
-    /* Sombra de foco actualizada al color verde */
     box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.3);
 }
 
@@ -132,7 +128,6 @@ a:hover {
     color: var(--color-primary-dark);
     text-decoration: underline;
 }
-
 
 /* ==============================================
   -- 4. Tablas --
@@ -208,7 +203,6 @@ td .action-btn {
   -- 5. Mensajes de Feedback (Alertas) --
   ==============================================
 */
-
 .alert {
     padding: 1rem 1.5rem;
     border-radius: var(--border-radius);
@@ -236,15 +230,33 @@ td .action-btn {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 2rem;
 }
 
 .product-thumbnail {
     width: 60px;
     height: 60px;
-    object-fit: cover; /* Asegura que la imagen no se deforme */
+    object-fit: cover;
     border-radius: 6px;
     box-shadow: var(--shadow-sm);
     display: block;
     margin: 0 auto;
+}
+
+.welcome-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-surface);
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+}
+.welcome-header p {
+    margin: 0.2rem 0;
+    color: var(--color-text-light);
+}
+.welcome-header strong {
+    color: var(--color-text);
 }
