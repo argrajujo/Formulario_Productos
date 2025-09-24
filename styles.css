@@ -1,0 +1,250 @@
+/* styles.css (con tema verde) */
+
+/* ==============================================
+  -- 1. Variables y Estilos Globales --
+  ==============================================
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --font-primary: 'Poppins', sans-serif;
+    /* --- LÍNEAS MODIFICADAS --- */
+    --color-primary: #48bb78; /* Verde principal */
+    --color-primary-dark: #38a169; /* Verde oscuro para hover */
+    /* -------------------------- */
+    --color-success: #38a169;
+    --color-success-dark: #2f855a;
+    --color-danger: #e53e3e;
+    --color-danger-dark: #c53030;
+    --color-text: #2d3748;
+    --color-text-light: #718096;
+    --color-background: #f7fafc;
+    --color-surface: #ffffff;
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --border-radius: 8px;
+    --transition-speed: 0.2s ease-in-out;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-background);
+    margin: 0;
+    padding: 2rem;
+}
+
+h2 {
+    color: var(--color-text);
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 2.5rem;
+    margin-top: 2rem;
+}
+
+/* ==============================================
+  -- 2. Formularios --
+  ==============================================
+*/
+form {
+    background: var(--color-surface);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    max-width: 500px;
+    margin: 2rem auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+textarea,
+input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    font-family: var(--font-primary);
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+input[type="file"]:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    /* Sombra de foco actualizada al color verde */
+    box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.3);
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* ==============================================
+  -- 3. Botones y Enlaces --
+  ==============================================
+*/
+.btn {
+    display: inline-block;
+    width: 100%;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+
+/* ==============================================
+  -- 4. Tablas --
+  ==============================================
+*/
+.table-container {
+    width: 100%;
+    margin-top: 2rem;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    background-color: #edf2f7;
+    color: var(--color-text-light);
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+    transition: background-color var(--transition-speed);
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: #f7fafc;
+}
+
+td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+}
+
+td .action-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    width: auto;
+    display: inline-block;
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+}
+.btn-danger:hover {
+    background-color: var(--color-danger-dark);
+}
+
+.btn-success {
+    background-color: var(--color-success);
+}
+.btn-success:hover {
+    background-color: var(--color-success-dark);
+}
+
+/* ==============================================
+  -- 5. Mensajes de Feedback (Alertas) --
+  ==============================================
+*/
+
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    margin: 1.5rem 0;
+    border: 1px solid transparent;
+    font-weight: 600;
+}
+
+.alert-success {
+    background-color: #c6f6d5;
+    color: #2f855a;
+    border-color: #9ae6b4;
+}
+
+.alert-danger {
+    background-color: #fed7d7;
+    color: #c53030;
+    border-color: #feb2b2;
+}
+
+/* ==============================================
+  -- 6. Estilos Adicionales --
+  ==============================================
+*/
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover; /* Asegura que la imagen no se deforme */
+    border-radius: 6px;
+    box-shadow: var(--shadow-sm);
+    display: block;
+    margin: 0 auto;
+}
