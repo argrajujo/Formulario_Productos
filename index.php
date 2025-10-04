@@ -68,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
                 $session_id = bin2hex(random_bytes(16));
                 auditar_login($session_id, $user['username']);
                 $_SESSION['session_id'] = $session_id;
-
                 // Redirigir al panel de administración
                 header("Location: registro_producto.php");
                 exit;
