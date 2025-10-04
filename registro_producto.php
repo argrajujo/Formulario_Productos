@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_producto']))
     $descripcion = $_POST['descripcion'];
     $precio = $_POST['precio'];
     $cantidad = $_POST['cantidad'];
-    $imagen_larga = ""; // Variable para imagen_larga, aunque no se usa en el form
+    $imagen_larga = "";
     $imagen_miniatura = "";
 
     // Subir la imagen miniatura
@@ -58,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_producto']))
             $feedback_class = "alert-success";
         } else {
             $feedback_message = "Error al registrar el producto: " . $conn->error;
-            $feedback_class = "alert-danger";
         }
         $stmt->close();
         $conn->close();
@@ -112,14 +111,18 @@ $productos = obtenerProductos();
                         }
                     ?>
                 </p>
+                <p>ID de Sesión: <strong><?php echo htmlspecialchars($_SESSION['session_id']); ?></strong></p>
             </div>
-            <a href="logout.php" class="btn btn-danger" style="width: auto;">Cerrar Sesión</a>
+            <div>
+                <a href="log_sesiones.php" class="btn" style="width: auto; margin-bottom: 0.5rem;">Ver Sesiones</a>
+                <a href="logout.php" class="btn btn-danger" style="width: auto;">Cerrar Sesión</a>
+            </div>
         </header>
         
         <h2>Formulario de Registro de Producto</h2>
 
         <?php if (isset($feedback_message)): ?>
-            <div class="alert <?php echo $feedback_class; ?>"><?php echo $feedback_message; ?></div>
+            <div class="alert <?php echo $feedback_class ?? 'alert-info'; ?>"><?php echo $feedback_message; ?></div>
         <?php endif; ?>
 
         <form action="registro_producto.php" method="post" enctype="multipart/form-data">
@@ -174,8 +177,10 @@ $productos = obtenerProductos();
                                 <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
                                 <td><?php echo date("d/m/Y H:i", strtotime($producto['fecha_creacion'])); ?></td>
                                 <td>
-                                    <a href="editar_producto.php?id=<?php echo $producto['id']; ?>" class="btn action-btn btn-success">Editar</a>
-                                    <a href="?eliminar_id=<?php echo $producto['id']; ?>" class="btn action-btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este producto?');">Eliminar</a>
+                                    <div class="action-buttons">
+                                        <a href="editar_producto.php?id=<?php echo $producto['id']; ?>" class="btn action-btn btn-success">Editar</a>
+                                        <a href="?eliminar_id=<?php echo $producto['id']; ?>" class="btn action-btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este producto?');">Eliminar</a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>

@@ -180,9 +180,13 @@ td {
 td .action-btn {
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
-    margin-right: 0.5rem;
     width: auto;
     display: inline-block;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem; /* Esto crea un espacio consistente entre los botones */
 }
 
 .btn-danger {

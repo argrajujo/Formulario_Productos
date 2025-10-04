@@ -13,9 +13,12 @@ CREATE TABLE IF NOT EXISTS login_user (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Crear la tabla para registrar los logins de los usuarios (log_sistema)
+-- --------------------------------------------------------
+-- -- TABLA MODIFICADA: log_sistema --
+-- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS log_sistema (
-    session_id VARCHAR(64) PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY, -- << AÑADIDO: Llave primaria autoincremental
+    session_id VARCHAR(64) NOT NULL UNIQUE, -- << CAMBIADO: Ya no es llave primaria, pero sigue siendo único
     username VARCHAR(50) NOT NULL,
     login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     logout_time TIMESTAMP NULL
